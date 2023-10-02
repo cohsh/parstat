@@ -6,7 +6,7 @@ float_max = sys.float_info.max
 
 ln_max = np.log(float_max)
 
-def boltzmann_distribution(temperature: float, energy: float) -> float:
+def boltzmann_distribution(temperature: float, energy: float | np.ndarray) -> float | np.ndarray:
     # Calculates the occupation number of particles that follow the Blotzmann distribution.
 
     kbt = temperature * 3.167e-6  # Kelvin -> Hartree
@@ -14,38 +14,27 @@ def boltzmann_distribution(temperature: float, energy: float) -> float:
 
     if kbt > float_min:
         beta = 1.0 / kbt  # inverse temperature
-        ln = - beta * energy
-        if ln <= ln_max:
-            n = np.exp(ln)
-        else:
-            n = np.sqrt(float_max)
     else:
-        if energy > 0.0:
-            n = 0.0
-        elif energy == 0.0:
-            n = 1.0
-        else:
-            n = np.sqrt(float_max)
+        beta = np.sqrt(float_max)
+    ln = - beta * energy
+    n = np.exp(ln)
     return n
 
-def fermi_distribution(temperature: float, energy: float) -> float:
+def fermi_distribution(temperature: float, energy: float | np.ndarray) -> float | np.ndarray:
     # Calculates the occupation number of particles that follow the Fermi-Dirac distribution.
 
     boltzmann_factor = boltzmann_distribution(temperature, energy)
-    n = boltzmann_factor / (1.0 + boltzmann_factor)
+    n = 1.0 / (1.0 / boltzmann_factor + 1.0)
     return n
 
-def bose_distribution(temperature: float, energy: float) -> float:
+def bose_distribution(temperature: float, energy: float | np.ndarray) -> float | np.ndarray:
     # Calculates the occupation number of particles that follow the Bose-Einstein distribution.
 
     boltzmann_factor = boltzmann_distribution(temperature, energy)
-    if boltzmann_factor != 1.0:
-        n = boltzmann_factor / (1.0 - boltzmann_factor)
-    else:
-        n = np.nan
+    n = 1.0 / (1.0 / boltzmann_factor - 1.0)
     return n
 
-def gaussian_distribution(sigma: float, energy: float) -> float:
+def gaussian_distribution(sigma: float, energy: float | np.ndarray) -> float | np.ndarray:
     # Calculates the occupation number of particles that follow the Gaussian distribution.
 
     n = np.exp(- energy ** 2 / (2.0 * sigma ** 2)) / (np.sqrt(2.0 * np.pi) * sigma)

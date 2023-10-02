@@ -12,10 +12,7 @@ def main():
 
     for i in range(5):
         temperature = i * 100.0
-        n_bose = np.empty(0)
-        for e in energy:
-            n_bose = np.append(n_bose, parstat.bose_distribution(temperature, e))
-
+        n_bose = parstat.bose_distribution(temperature, energy)
         plt.plot(energy, n_bose, label="{0} K".format(int(temperature)))
     
     plt.title("Bose Distribution")

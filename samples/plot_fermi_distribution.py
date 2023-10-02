@@ -11,10 +11,7 @@ def main():
 
     for i in range(5):
         temperature = i * 100.0
-        n_fermi = np.empty(0)
-        for e in energy:
-            n_fermi = np.append(n_fermi, parstat.fermi_distribution(temperature, e))
-
+        n_fermi = parstat.fermi_distribution(temperature, energy)
         plt.plot(energy, n_fermi, label="{0} K".format(int(temperature)))
 
     plt.title("Fermi Distribution")

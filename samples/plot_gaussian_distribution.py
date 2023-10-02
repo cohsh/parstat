@@ -10,10 +10,7 @@ def main():
 
     energy = np.linspace(-energy_max, energy_max, 1000)
 
-    n_gaussian = np.empty(0)
-
-    for e in energy:
-        n_gaussian = np.append(n_gaussian, parstat.gaussian_distribution(sigma, e))
+    n_gaussian = parstat.gaussian_distribution(sigma, energy)
 
     plt.plot(energy, n_gaussian, label="Gaussian Distribution")
     plt.xlabel("Energy ($\mathrm{Hartree}$)")
